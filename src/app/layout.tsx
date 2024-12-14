@@ -3,12 +3,17 @@ import "^/styles/globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import AppWrapper from "./_components/appWrapper";
+import { auth } from "@clerk/nextjs/server";
+import { getUser } from "^/server/user";
 
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const { userId } = await auth();
+
+  const user = userId ? await getUser(userId) : null;
 
   return (
     <ClerkProvider>
@@ -21,7 +26,7 @@ export default async function RootLayout({
         </head>
         <body>
           <NextIntlClientProvider messages={messages}>
-            <AppWrapper>{children}</AppWrapper>
+            <AppWrapper user={user}>{children}</AppWrapper>
           </NextIntlClientProvider>
         </body>
       </html>

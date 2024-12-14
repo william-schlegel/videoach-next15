@@ -11,6 +11,7 @@ import {
   useSession,
 } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
+import type { GetUserData } from "^/server/user";
 
 type MenuDefinitionType = {
   label: string;
@@ -96,9 +97,10 @@ const MENUS: MenuDefinitionType[] = [
 type NavbarProps = Readonly<{
   theme: TThemes;
   onChangeTheme: (newTheme: TThemes) => void;
+  user: GetUserData;
 }>;
 
-export default function Navbar({ theme, onChangeTheme }: NavbarProps) {
+export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
   const { session } = useSession();
   const userId = session?.user.id;
   const t = useTranslations("common");
@@ -132,7 +134,7 @@ export default function Navbar({ theme, onChangeTheme }: NavbarProps) {
             tabIndex={0}
             className="dropdown-content menu rounded-box menu-compact bg-base-100 mt-3 w-52 p-2 shadow"
           >
-            <Menu />
+            <Menu user={user} />
           </ul>
         </div>
         <Logo />
@@ -142,7 +144,7 @@ export default function Navbar({ theme, onChangeTheme }: NavbarProps) {
           <li>
             <Link href={"/"}>{t("navigation.home")}</Link>
           </li>
-          <Menu />
+          <Menu user={user} />
         </ul>
       </div>
 
@@ -238,20 +240,22 @@ export default function Navbar({ theme, onChangeTheme }: NavbarProps) {
   );
 }
 
-const Menu = () => {
+type MenuProps = Readonly<{
+  user: GetUserData;
+}>;
+const Menu = ({ user }: MenuProps) => {
   const { session } = useSession();
   const t = useTranslations("common");
-  // const { features } = useUserInfo();
 
   return (
     <>
       {MENUS.map((menu) => {
         if (
-          menu.access.includes("VISITOR") || //sessionData?.user?.role) ||
+          (user?.role && menu.access.includes(user.role)) ||
           (!session && menu.access.includes("VISITOR"))
         ) {
-          const locked = false;
-          //   (menu.featured && !features.includes(menu.featured)) ?? false;
+          const locked =
+            (menu.featured && !user?.features.includes(menu.featured)) ?? false;
           return (
             <li key={menu.page}>
               {locked ? (
