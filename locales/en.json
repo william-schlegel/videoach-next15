@@ -607,6 +607,13 @@
     "enter-location": "Entrez une adresse ou une ville, ou cliquez sur l'épingle pour déterminer votre emplacement",
     "tag-line": "Gestion de club de sport",
     "social": "Social",
+    "roles": {
+      "MEMBER": "Membre",
+      "COACH": "Coach",
+      "MANAGER": "Manager",
+      "MANAGER_COACH": "Manager & Coach",
+      "ADMIN": "Administrateur"
+    },
     "navigation": {
       "home": "Accueil",
       "dashboard": "Mon tableau de bord",

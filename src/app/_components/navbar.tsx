@@ -1,5 +1,4 @@
 "use client";
-
 import type { Feature, Role } from "@prisma/client";
 import Link from "next/link";
 import { type TThemes } from "./themeSelector";
@@ -10,8 +9,9 @@ import {
   UserButton,
   useSession,
 } from "@clerk/nextjs";
-import { useTranslations } from "next-intl";
 import type { GetUserData } from "^/server/user";
+import { env } from "^/env";
+import { useTranslations } from "next-intl";
 
 type MenuDefinitionType = {
   label: string;
@@ -20,10 +20,12 @@ type MenuDefinitionType = {
   featured?: Feature;
 };
 
+const BETA = env.NEXT_PUBLIC_BETA === "true";
+
 const MENUS: MenuDefinitionType[] = [
   {
     label: "navigation.dashboard",
-    page: "/",
+    page: "/dashboard",
     access: ["ADMIN", "COACH", "MANAGER", "MANAGER_COACH", "MEMBER"],
   },
   {
@@ -225,6 +227,9 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
               <SignInButton />
             </SignedOut>
             <SignedIn>
+              <span className="badge-primary badge">
+                {t(`roles.${user?.role}`)}
+              </span>
               <UserButton />
             </SignedIn>
           </>
@@ -244,33 +249,18 @@ type MenuProps = Readonly<{
   user: GetUserData;
 }>;
 const Menu = ({ user }: MenuProps) => {
-  const { session } = useSession();
-  const t = useTranslations("common");
-
   return (
     <>
       {MENUS.map((menu) => {
         if (
           (user?.role && menu.access.includes(user.role)) ||
-          (!session && menu.access.includes("VISITOR"))
+          (!user && menu.access.includes("VISITOR"))
         ) {
           const locked =
             (menu.featured && !user?.features.includes(menu.featured)) ?? false;
           return (
             <li key={menu.page}>
-              {locked ? (
-                <span
-                  className="tooltip tooltip-bottom tooltip-error flex items-center gap-2 text-gray-300"
-                  data-tip={t("navigation.insufficient-plan")}
-                >
-                  <i className="bx bx-lock bx-xs" />
-                  {t(menu.label)}
-                </span>
-              ) : (
-                <Link className="justify-between" href={menu.page}>
-                  {t(menu.label)}
-                </Link>
-              )}
+              <MenuItem locked={locked} label={menu.label} page={menu.page} />
             </li>
           );
         }
@@ -286,6 +276,32 @@ const Logo = () => {
       <Link href={"/"} className="btn-ghost btn text-2xl capitalize">
         Videoach
       </Link>
+      {BETA ? <span className="badge-warning badge">BETA</span> : null}
     </div>
   );
 };
+
+function MenuItem({
+  locked,
+  label,
+  page,
+}: {
+  locked: boolean;
+  label: string;
+  page: string;
+}) {
+  const t = useTranslations("common");
+  return locked ? (
+    <span
+      className="tooltip tooltip-bottom tooltip-error flex items-center gap-2 text-gray-300"
+      data-tip={t("navigation.insufficient-plan")}
+    >
+      <i className="bx bx-lock bx-xs" />
+      {t(label)}
+    </span>
+  ) : (
+    <Link className="justify-between" href={page}>
+      {t(label)}
+    </Link>
+  );
+}

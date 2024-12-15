@@ -6,6 +6,7 @@ import { useLocalStorage } from "usehooks-ts";
 import type { TThemes } from "./themeSelector";
 import Navbar from "./navbar";
 import type { GetUserData } from "^/server/user";
+import Footer from "./footer";
 
 type AppWrapperProps = {
   user: GetUserData;
@@ -34,6 +35,7 @@ export default function AppWrapper({
         user={user}
       />
       <main>{children}</main>
+      <Footer />
     </div>
   );
 }
