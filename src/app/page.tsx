@@ -21,7 +21,7 @@ export default async function HomePage() {
     <section className="bg-gradient-home-hero hero min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <Image
-          src="/images/bruce-mars-gJtDg6WfMlQ-unsplash.jpg"
+          src="/images/image.png"
           alt=""
           width={800}
           height={800}

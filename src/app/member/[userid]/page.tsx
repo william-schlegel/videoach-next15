@@ -14,9 +14,9 @@ import { startOfToday } from "date-fns";
 
 export default async function Page({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ userid: string }>;
-}) {
+}>) {
   const userId = (await params).userid;
   const user = await getUser(userId);
   if (user.role !== "MEMBER" && user.role !== "ADMIN") redirect(`/`);
@@ -48,7 +48,7 @@ export default async function Page({
         ))}
       </section>
       <section className="grid auto-rows-auto gap-2 lg:grid-cols-2">
-        <article className="border-primary rounded-md border p-2">
+        <article className="rounded-md border border-primary p-2">
           <h2>{t("member.my-reservations")}</h2>
           <div className="grid grid-cols-[repeat(auto-fit,_minmax(10rem,_1fr))] gap-2">
             {queryReservations?.map((reservation) => (

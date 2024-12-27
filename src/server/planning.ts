@@ -28,7 +28,10 @@ const getMemberDailyPlanningSchema = z.object({
 type GetMemberDailyPlanning = z.infer<typeof getMemberDailyPlanningSchema>;
 
 export async function getMemberDailyPlanning(input: GetMemberDailyPlanning) {
-  getMemberDailyPlanningSchema.parse(input);
+  const parseResult = getMemberDailyPlanningSchema.safeParse(input);
+  if (!parseResult.success) {
+    return { error: true, message: "Invalid input" };
+  }
   const cacheFn = dbCache(() => getMemberDailyPlanningInternal(input), {
     tags: [getGlobalTag(CACHE_TAGS.planning)],
   });
@@ -233,21 +236,44 @@ const createPlanningReservationSchema = z.object({
   date: z.date(),
 });
 
-type CreatePlanningReservation = z.infer<
+export type CreatePlanningReservation = z.infer<
   typeof createPlanningReservationSchema
 >;
 
 export async function createPlanningReservation(
   input: CreatePlanningReservation,
 ) {
-  createPlanningReservationSchema.parse(input);
-  const reservation = await db.reservation.create({
-    data: {
-      date: input.date,
-      planningActivityId: input.planningActivityId,
-      userId: input.memberId,
-    },
-  });
-  revalidateDbCache({ tag: CACHE_TAGS.planning });
-  return reservation;
+  const parseResult = createPlanningReservationSchema.safeParse(input);
+  if (!parseResult.success) {
+    return { error: true, message: "Invalid input" };
+  }
+  try {
+    const reservation = await db.reservation.create({
+      data: {
+        date: input.date,
+        planningActivityId: input.planningActivityId,
+        userId: input.memberId,
+      },
+    });
+    revalidateDbCache({ tag: CACHE_TAGS.planning });
+    return { error: false, data: reservation };
+  } catch (error) {
+    console.error(error);
+    return { error: true, message: "Error occurred" };
+  }
+}
+
+export async function deleteReservation(input: string) {
+  const parseResult = z.string().cuid().safeParse(input);
+  if (!parseResult.success) {
+    return { error: true, message: "Invalid input" };
+  }
+  try {
+    const deleted = await db.reservation.delete({ where: { id: input } });
+    revalidateDbCache({ tag: CACHE_TAGS.planning });
+    return { error: false, data: deleted.id };
+  } catch (error) {
+    console.error(error);
+    return { error: true, message: "Error occurred" };
+  }
 }
