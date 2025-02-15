@@ -106,6 +106,7 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
   const { session } = useSession();
   const userId = session?.user.id;
   const t = useTranslations("common");
+  const tAuth = useTranslations("auth");
 
   // const { notifications, unread, formatMessage } = useNotifications(userId);
   // const user = trpc.users.getUserById.useQuery(userId ?? "", {
@@ -116,7 +117,7 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
     <div className="navbar bg-base-100">
       <div className="navbar-start">
         <div className="dropdown">
-          <label tabIndex={0} className="btn-ghost btn lg:hidden">
+          <p className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -131,11 +132,8 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
                 d="M4 6h16M4 12h8m-8 6h16"
               />
             </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu rounded-box menu-compact bg-base-100 mt-3 w-52 p-2 shadow"
-          >
+          </p>
+          <ul className="menu-compact menu dropdown-content mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
             <Menu user={user} />
           </ul>
         </div>
@@ -151,7 +149,7 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
       </div>
 
       <div className="navbar-end space-x-2">
-        <label className="swap swap-rotate">
+        <label className="swap swap-rotate" aria-label="swap">
           <input
             type="checkbox"
             onChange={(e) =>
@@ -224,10 +222,10 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
             <i className="bx bx-bell bx-md text-base-300" />
             {/* )}{" "} */}
             <SignedOut>
-              <SignInButton />
+              <Link href="/sign-in">{tAuth("signin.connect")}</Link>
             </SignedOut>
             <SignedIn>
-              <span className="badge-primary badge">
+              <span className="badge badge-primary">
                 {t(`roles.${user?.role}`)}
               </span>
               <UserButton />
@@ -236,7 +234,7 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
         ) : (
           <ul className="menu menu-horizontal p-0">
             <li>
-              <SignInButton />
+              <Link href="/sign-in">{tAuth("signin.connect")}</Link>{" "}
             </li>
           </ul>
         )}
@@ -273,10 +271,12 @@ const Menu = ({ user }: MenuProps) => {
 const Logo = () => {
   return (
     <div className="flex-1">
-      <Link href={"/"} className="btn-ghost btn text-2xl capitalize">
+      <Link href={"/"} className="btn btn-ghost text-2xl capitalize">
         Videoach
       </Link>
-      {BETA ? <span className="badge-warning badge">BETA</span> : null}
+      {BETA ? (
+        <span className="badge badge-warning hidden lg:inline">BETA</span>
+      ) : null}
     </div>
   );
 };

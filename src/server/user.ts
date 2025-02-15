@@ -2,6 +2,7 @@ import { CACHE_TAGS, dbCache, getIdTag, revalidateDbCache } from "^/lib/cache";
 import { db } from "./db";
 import type { Role } from "@prisma/client";
 import { z } from "zod";
+import { error } from "console";
 
 export async function getUser(userId: string) {
   const cacheFn = dbCache(() => getUserInternal(userId), {
@@ -50,10 +51,17 @@ async function getUserInternal(userId: string) {
 
 export type GetUserData = Awaited<ReturnType<typeof getUser>> | null;
 
-export async function createNewUserFromClerk(userId: string) {
+export async function createNewUserFromClerk(
+  userId: string,
+  emails: string[],
+  firstName: string | null,
+  lastName: string | null,
+) {
   const newUser = await db.user.create({
     data: {
       clerkId: userId,
+      email: emails?.[0] ?? "",
+      name: `${firstName} ${lastName}`,
     },
   });
   if (newUser != null) {
@@ -74,7 +82,10 @@ const getReservationsByUserIdSchema = z.object({
 type GetReservationsByUserId = z.infer<typeof getReservationsByUserIdSchema>;
 
 export async function getReservationsByUserId(input: GetReservationsByUserId) {
-  getReservationsByUserIdSchema.parse(input);
+  const parseResult = getReservationsByUserIdSchema.safeParse(input);
+  if (!parseResult.success) {
+    return { error: true, data: [], message: "Invalid input" };
+  }
   const cacheFn = dbCache(() => getReservationsByUserIdInternal(input), {
     tags: [getIdTag(input.userId, CACHE_TAGS.user)],
   });
@@ -83,9 +94,7 @@ export async function getReservationsByUserId(input: GetReservationsByUserId) {
 }
 
 async function getReservationsByUserIdInternal(input: GetReservationsByUserId) {
-  getReservationsByUserIdSchema.parse(input);
-
-  return db.reservation.findMany({
+  const reservations = await db.reservation.findMany({
     where: { userId: input.userId, date: { gte: input.after } },
     orderBy: { date: "asc" },
     include: {
@@ -100,4 +109,5 @@ async function getReservationsByUserIdInternal(input: GetReservationsByUserId) {
       },
     },
   });
+  return { error: false, data: reservations, message: "" };
 }

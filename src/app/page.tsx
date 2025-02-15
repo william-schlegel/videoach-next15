@@ -2,18 +2,20 @@ import Image from "next/image";
 import ButtonLink from "./_components/ui/buttonLink";
 import { getUser } from "^/server/user";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 export default async function HomePage() {
   const { userId } = await auth();
   if (userId) {
     const { role } = await getUser(userId);
-    if (role === "MEMBER") redirect(`/member/${userId}`);
-    if (role === "COACH") redirect(`/coach/${userId}`);
-    if (role === "MANAGER") redirect(`/manager/${userId}`);
-    if (role === "MANAGER_COACH") redirect(`/manager-coach/${userId}`);
-    if (role === "ADMIN") redirect(`/admin/${userId}`);
+    if (role === "MEMBER") redirect(`/member/${userId}`, RedirectType.replace);
+    if (role === "COACH") redirect(`/coach/${userId}`, RedirectType.replace);
+    if (role === "MANAGER")
+      redirect(`/manager/${userId}`, RedirectType.replace);
+    if (role === "MANAGER_COACH")
+      redirect(`/manager-coach/${userId}`, RedirectType.replace);
+    if (role === "ADMIN") redirect(`/admin/${userId}`, RedirectType.replace);
   }
   const t = await getTranslations("home");
 
@@ -34,13 +36,13 @@ export default async function HomePage() {
           </h1>
           <p className="py-6">{t("hero-text")}</p>
           <div className="flex flex-wrap gap-2">
-            <ButtonLink className="btn-accent btn" href="#find-club">
+            <ButtonLink className="btn btn-accent" href="#find-club">
               {t("btn-visitor")}
             </ButtonLink>
-            <ButtonLink className="btn-primary btn" href="/manager">
+            <ButtonLink className="btn btn-primary" href="/manager">
               {t("btn-manager")}
             </ButtonLink>
-            <ButtonLink className="btn-secondary btn" href="/coach">
+            <ButtonLink className="btn btn-secondary" href="/coach">
               {t("btn-coach")}
             </ButtonLink>
           </div>

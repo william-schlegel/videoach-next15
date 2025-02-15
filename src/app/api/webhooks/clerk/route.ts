@@ -46,7 +46,12 @@ export async function POST(req: Request) {
   switch (event.type) {
     case "user.created": {
       console.info("user.created", event.data.id);
-      await createNewUserFromClerk(event.data.id);
+      await createNewUserFromClerk(
+        event.data.id,
+        event.data.email_addresses.map((e) => e.email_address),
+        event.data.first_name,
+        event.data.last_name,
+      );
       break;
     }
     case "user.deleted": {

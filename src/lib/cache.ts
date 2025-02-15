@@ -12,12 +12,14 @@ export type ValidTags =
 
 export const CACHE_TAGS = {
   user: "user",
+  club: "club",
   site: "site",
   room: "room",
   activity: "activity",
   activityGroup: "activityGroup",
   planning: "planning",
   calendar: "calendar",
+  pricing: "pricing",
 } as const;
 
 export function getGlobalTag(tag: keyof typeof CACHE_TAGS) {

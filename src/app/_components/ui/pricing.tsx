@@ -1,54 +1,47 @@
-import { trpc } from "@trpcclient/trpc";
-import { useTranslation } from "next-i18next";
+"use client";
 import { type ReactNode, useState } from "react";
-import Spinner from "./spinner";
+import { type getPricingById } from "^/server/pricing";
+import { useTranslations } from "next-intl";
 
-type Props = {
-  pricingId: string;
+type Props = Readonly<{
+  data: Awaited<ReturnType<typeof getPricingById>>["data"];
   onSelect?: (id: string, monthly: boolean) => void;
   compact?: boolean;
   forceHighlight?: boolean;
-};
+}>;
 
 export function Pricing({
-  pricingId,
+  data,
   onSelect,
   compact = false,
   forceHighlight,
 }: Props) {
-  const pricingQuery = trpc.pricings.getPricingById.useQuery(pricingId);
   const [monthlyPrice, setMonthlyPrice] = useState(true);
-  const { t } = useTranslation("home");
+  const t = useTranslations("home");
 
-  if (pricingQuery.isLoading) return <Spinner />;
-  const hl =
-    forceHighlight ||
-    (forceHighlight === undefined && pricingQuery.data?.highlighted);
+  const hl = forceHighlight ?? data?.highlighted;
+
   return (
     <div
       className={`card ${compact ? "w-fit" : "w-96"} bg-base-100 ${
         hl ? "border-4 border-primary" : ""
-      } shadow-xl ${
-        pricingQuery.data?.deleted ? "border-4 border-red-600" : ""
-      }`}
+      } shadow-xl ${data?.deleted ? "border-4 border-red-600" : ""}`}
     >
       <div
         className={`card-body items-center text-center ${compact ? "p-2" : ""}`}
       >
-        {pricingQuery.data?.deleted ? (
+        {data?.deleted ? (
           <div className="alert alert-warning text-center">
             {t("pricing.deleted", {
-              date: pricingQuery.data?.deletionDate?.toLocaleDateString(),
+              date: data?.deletionDate?.toLocaleDateString(),
             })}
           </div>
         ) : null}
-        <h2 className="card-title text-3xl font-bold">
-          {pricingQuery.data?.title}
-        </h2>
-        <p>{pricingQuery.data?.description}</p>
+        <h2 className="card-title text-3xl font-bold">{data?.title}</h2>
+        <p>{data?.description}</p>
         {!compact ? (
           <ul className="self-start py-8">
-            {pricingQuery.data?.options.map((option) => (
+            {data?.options.map((option) => (
               <li key={option.id} className="flex items-center gap-4">
                 <i className="bx bx-chevron-right bx-sm text-accent" />
                 <span className="text-start">{option.name}</span>
@@ -56,7 +49,7 @@ export function Pricing({
             ))}
           </ul>
         ) : null}
-        {pricingQuery.data?.free ? (
+        {data?.free ? (
           <p
             className={`${
               compact ? "py-1" : "py-4"
@@ -68,7 +61,7 @@ export function Pricing({
           <>
             <div className="flex items-center gap-2">
               <button
-                className={`btn-primary btn-sm btn ${
+                className={`btn btn-primary btn-sm ${
                   monthlyPrice ? "" : "btn-outline"
                 }`}
                 onClick={() => setMonthlyPrice(true)}
@@ -77,7 +70,7 @@ export function Pricing({
                 {t("pricing.monthly")}
               </button>
               <button
-                className={`btn-primary btn-sm btn ${
+                className={`btn btn-primary btn-sm ${
                   monthlyPrice ? "btn-outline" : ""
                 }`}
                 onClick={() => setMonthlyPrice(false)}
@@ -93,10 +86,10 @@ export function Pricing({
             >
               {monthlyPrice
                 ? t("pricing.price-monthly", {
-                    price: pricingQuery.data?.monthly,
+                    price: data?.monthly,
                   })
                 : t("pricing.price-yearly", {
-                    price: pricingQuery.data?.yearly,
+                    price: data?.yearly,
                   })}
             </p>
           </>
@@ -104,11 +97,9 @@ export function Pricing({
         {typeof onSelect === "function" && (
           <div className="card-actions">
             <button
-              className="btn-primary btn-block btn"
+              className="btn btn-primary btn-block"
               type="button"
-              onClick={() =>
-                onSelect(pricingQuery.data?.id ?? "", monthlyPrice)
-              }
+              onClick={() => onSelect(data?.id ?? "", monthlyPrice)}
             >
               {t("pricing.select")}
             </button>
@@ -119,10 +110,10 @@ export function Pricing({
   );
 }
 
-type PricingContainerProps = {
+type PricingContainerProps = Readonly<{
   children: ReactNode;
   compact?: boolean;
-};
+}>;
 
 export function PricingContainer({
   children,
@@ -131,7 +122,7 @@ export function PricingContainer({
   return (
     <div
       className={`flex flex-wrap items-stretch gap-4 ${
-        compact ? "justify-start" : "justify-center  py-12"
+        compact ? "justify-start" : "justify-center py-12"
       }`}
     >
       {children}

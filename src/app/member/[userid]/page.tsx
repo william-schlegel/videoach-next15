@@ -26,6 +26,7 @@ export default async function Page({
     after: startOfToday(),
   });
 
+  if (queryReservations.error) return <div>{queryReservations.message}</div>;
   return (
     <PageLayout title={t("member.dashboard")}>
       <h1 className="flex justify-between">
@@ -51,7 +52,7 @@ export default async function Page({
         <article className="rounded-md border border-primary p-2">
           <h2>{t("member.my-reservations")}</h2>
           <div className="grid grid-cols-[repeat(auto-fit,_minmax(10rem,_1fr))] gap-2">
-            {queryReservations?.map((reservation) => (
+            {queryReservations.data.map((reservation) => (
               // <MyReservation
               //   key={reservation.id}
               //   reservation={reservation}

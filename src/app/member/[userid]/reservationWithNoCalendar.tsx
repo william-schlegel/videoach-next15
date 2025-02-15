@@ -15,14 +15,14 @@ type WncRoom = {
   reservation: RoomReservation;
 };
 
-type WncProps = {
+type WncProps = Readonly<{
   activity: Activity & {
     rooms: WncRoom[];
   };
   day: Date;
   memberId: string;
   reservations: { id: string; date: Date }[];
-};
+}>;
 
 type TOpeningTime =
   | (DayOpeningTime & {
@@ -57,7 +57,7 @@ export default async function Wnc({
       {activity.rooms.map((room) => (
         <div
           key={`${room?.name}-${activity.id}`}
-          className="border-base-300 bg-base-100 border p-2"
+          className="border border-base-300 bg-base-100 p-2"
         >
           <p>
             <span className="text-xs">{openingText}</span>&nbsp;
