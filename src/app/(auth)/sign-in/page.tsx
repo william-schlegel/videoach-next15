@@ -1,8 +1,6 @@
 "use client";
 
-import * as Clerk from "@clerk/elements/common";
-import * as SignIn from "@clerk/elements/sign-in";
-import PageLayout from "^/app/_components/pageLayout";
+import PageLayout from "@/app/_components/pageLayout";
 import { useTranslations } from "next-intl";
 
 export const PROVIDERS = [

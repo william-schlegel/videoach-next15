@@ -1,4 +1,4 @@
-import { getMemberDailyPlanning } from "^/server/planning";
+import { getMemberDailyPlanning } from "@/server/planning";
 import { getTranslations } from "next-intl/server";
 import Wnc from "./reservationWithNoCalendar";
 import MakeReservationButton from "./makeReservationButton";

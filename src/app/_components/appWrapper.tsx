@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import type { TThemes } from "./themeSelector";
 import Navbar from "./navbar";
-import type { GetUserData } from "^/server/user";
+import type { GetUserData } from "@/server/user";
 import Footer from "./footer";
 
 type AppWrapperProps = {

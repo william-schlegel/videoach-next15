@@ -7,9 +7,9 @@ import type {
   Room,
   UserCoach,
 } from "@prisma/client";
-import Confirmation from "^/app/_components/ui/confirmation";
-import { getButtonSize } from "^/app/_components/ui/modal";
-import { formatDateLocalized } from "^/lib/formatDate";
+import Confirmation from "@/app/_components/ui/confirmation";
+import { getButtonSize } from "@/app/_components/ui/modal";
+import { formatDateLocalized } from "@/lib/formatDate";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";

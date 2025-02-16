@@ -1,8 +1,7 @@
-import { CACHE_TAGS, dbCache, getIdTag, revalidateDbCache } from "^/lib/cache";
+import { CACHE_TAGS, dbCache, getIdTag, revalidateDbCache } from "@/lib/cache";
 import { db } from "./db";
 import type { Role } from "@prisma/client";
 import { z } from "zod";
-import { error } from "console";
 
 export async function getUser(userId: string) {
   const cacheFn = dbCache(() => getUserInternal(userId), {
@@ -15,7 +14,7 @@ export async function getUser(userId: string) {
 async function getUserInternal(userId: string) {
   const data = await db.user.findFirst({
     where: {
-      clerkId: userId,
+      id: userId,
     },
     include: {
       pricing: {

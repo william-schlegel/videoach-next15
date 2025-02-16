@@ -8,12 +8,12 @@ import {
   type FieldErrorsImpl,
   type UseFormSetValue,
 } from "react-hook-form";
-import Modal, { type TModalVariant } from "^/app/_components/ui/modal";
+import Modal, { type TModalVariant } from "@/app/_components/ui/modal";
 import { useRef, type PropsWithoutRef } from "react";
-import Confirmation from "^/app/_components/ui/confirmation";
-import Spinner from "^/app/_components/ui/spinner";
+import Confirmation from "@/app/_components/ui/confirmation";
+import Spinner from "@/app/_components/ui/spinner";
 import { Feature, Role } from "@prisma/client";
-import ButtonIcon from "^/app/_components/ui/buttonIcon";
+import ButtonIcon from "@/app/_components/ui/buttonIcon";
 import {
   DndContext,
   closestCenter,

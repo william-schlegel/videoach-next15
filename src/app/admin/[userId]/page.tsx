@@ -1,6 +1,6 @@
-import PageLayout from "^/app/_components/pageLayout";
-import { getAdminData } from "^/server/dashboard";
-import { getUser } from "^/server/user";
+import PageLayout from "@/app/_components/pageLayout";
+import { getAdminData } from "@/server/dashboard";
+import { getUser } from "@/server/user";
 import { getTranslations } from "next-intl/server";
 import { redirect, RedirectType } from "next/navigation";
 

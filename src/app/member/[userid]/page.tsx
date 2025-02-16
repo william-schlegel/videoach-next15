@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { getReservationsByUserId, getUser } from "^/server/user";
+import { getReservationsByUserId, getUser } from "@/server/user";
 import { redirect } from "next/navigation";
 import Subscription from "./subscription";
 import { getTranslations } from "next-intl/server";
-import PageLayout from "^/app/_components/pageLayout";
-import { SelectDate } from "^/app/_components/ui/selectDay";
+import PageLayout from "@/app/_components/pageLayout";
+import { SelectDate } from "@/app/_components/ui/selectDay";
 import { startOfToday } from "date-fns";
 /***
  *

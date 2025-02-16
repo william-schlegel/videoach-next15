@@ -4,8 +4,8 @@ import type {
   OpeningTime,
   RoomReservation,
 } from "@prisma/client";
-import { getDayForDate } from "^/lib/getDayName";
-import { getCalendarForClub } from "^/server/calendar";
+import { getDayForDate } from "@/lib/getDayName";
+import { getCalendarForClub } from "@/server/calendar";
 import { getTranslations } from "next-intl/server";
 
 type WncRoom = {

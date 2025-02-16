@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectDate } from "^/app/_components/ui/selectDay";
+import { SelectDate } from "@/app/_components/ui/selectDay";
 import { startOfToday } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useState } from "react";

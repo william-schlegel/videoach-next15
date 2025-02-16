@@ -1,4 +1,4 @@
-import { clearFullCache } from "^/lib/cache";
+import { clearFullCache } from "@/lib/cache";
 
 export async function GET() {
   clearFullCache();

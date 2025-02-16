@@ -1,14 +1,13 @@
 import Image from "next/image";
 import ButtonLink from "./_components/ui/buttonLink";
-import { getUser } from "^/server/user";
-import { auth } from "@clerk/nextjs/server";
 import { redirect, RedirectType } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { getActualUser } from "@/lib/auth";
 
 export default async function HomePage() {
-  const { userId } = await auth();
-  if (userId) {
-    const { role } = await getUser(userId);
+  const user = await getActualUser();
+  if (user) {
+    const { role, id: userId } = user;
     if (role === "MEMBER") redirect(`/member/${userId}`, RedirectType.replace);
     if (role === "COACH") redirect(`/coach/${userId}`, RedirectType.replace);
     if (role === "MANAGER")

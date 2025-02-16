@@ -2,16 +2,10 @@
 import type { Feature, Role } from "@prisma/client";
 import Link from "next/link";
 import { type TThemes } from "./themeSelector";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useSession,
-} from "@clerk/nextjs";
-import type { GetUserData } from "^/server/user";
-import { env } from "^/env";
+import type { GetUserData } from "@/server/user";
+import { env } from "@/env";
 import { useTranslations } from "next-intl";
+import { useSession } from "@/lib/auth-client";
 
 type MenuDefinitionType = {
   label: string;
@@ -103,8 +97,8 @@ type NavbarProps = Readonly<{
 }>;
 
 export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
-  const { session } = useSession();
-  const userId = session?.user.id;
+  const { data } = useSession();
+  const userId = data?.user.id;
   const t = useTranslations("common");
   const tAuth = useTranslations("auth");
 
@@ -221,15 +215,16 @@ export default function Navbar({ theme, onChangeTheme, user }: NavbarProps) {
             ) : ( */}
             <i className="bx bx-bell bx-md text-base-300" />
             {/* )}{" "} */}
-            <SignedOut>
+            {userId ? (
+              <>
+                <span className="badge badge-primary">
+                  {t(`roles.${user?.role}`)}
+                </span>
+                {/* <UserButton /> */}
+              </>
+            ) : (
               <Link href="/sign-in">{tAuth("signin.connect")}</Link>
-            </SignedOut>
-            <SignedIn>
-              <span className="badge badge-primary">
-                {t(`roles.${user?.role}`)}
-              </span>
-              <UserButton />
-            </SignedIn>
+            )}
           </>
         ) : (
           <ul className="menu menu-horizontal p-0">

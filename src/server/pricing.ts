@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { CACHE_TAGS, dbCache, getGlobalTag, getIdTag } from "^/lib/cache";
+import { CACHE_TAGS, dbCache, getGlobalTag, getIdTag } from "@/lib/cache";
 import { z } from "zod";
 import { db } from "./db";
 

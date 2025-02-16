@@ -2,7 +2,7 @@ import {
   type CreatePlanningReservation,
   createPlanningReservation,
   deleteReservation,
-} from "^/server/planning";
+} from "@/server/planning";
 
 export async function POST(req: Request) {
   const payload = (await req.json()) as CreatePlanningReservation;

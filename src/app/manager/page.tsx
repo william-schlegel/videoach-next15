@@ -1,8 +1,8 @@
-import { getPricingForRole } from "^/server/pricing";
+import { getPricingForRole } from "@/server/pricing";
 import { getTranslations } from "next-intl/server";
 import PageLayout from "../_components/pageLayout";
-import { Feature, FeatureContainer } from "^/app/_components/ui/features";
-import { Pricing, PricingContainer } from "^/app/_components/ui/pricing";
+import { Feature, FeatureContainer } from "@/app/_components/ui/features";
+import { Pricing, PricingContainer } from "@/app/_components/ui/pricing";
 import Link from "next/link";
 
 /**

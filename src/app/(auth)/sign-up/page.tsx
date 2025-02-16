@@ -2,8 +2,8 @@
 
 import * as Clerk from "@clerk/elements/common";
 import * as SignUp from "@clerk/elements/sign-up";
-import PageLayout from "^/app/_components/pageLayout";
-import { PROVIDERS } from "^/app/(auth)/sign-in/[[...sign-in]]/page";
+import PageLayout from "@/app/_components/pageLayout";
+import { PROVIDERS } from "@/app/(auth)/sign-in/page";
 import { useTranslations } from "next-intl";
 
 export default function SignUpPage() {

@@ -1,9 +1,8 @@
 import { Role } from "@prisma/client";
-import { CACHE_TAGS, dbCache, getGlobalTag, getIdTag } from "^/lib/cache";
+import { CACHE_TAGS, dbCache, getGlobalTag, getIdTag } from "@/lib/cache";
 import { startOfToday } from "date-fns";
 import { z } from "zod";
 import { db } from "./db";
-import { auth } from "@clerk/nextjs/server";
 import { getUser } from "./user";
 
 // export const dashboardRouter = router({

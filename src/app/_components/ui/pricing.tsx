@@ -1,6 +1,6 @@
 "use client";
 import { type ReactNode, useState } from "react";
-import { type getPricingById } from "^/server/pricing";
+import { type getPricingById } from "@/server/pricing";
 import { useTranslations } from "next-intl";
 
 type Props = Readonly<{

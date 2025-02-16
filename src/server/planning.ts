@@ -3,7 +3,7 @@ import {
   dbCache,
   getGlobalTag,
   revalidateDbCache,
-} from "^/lib/cache";
+} from "@/lib/cache";
 import { db } from "./db";
 import { z } from "zod";
 import type {
@@ -17,8 +17,8 @@ import type {
   Site,
   UserCoach,
 } from "@prisma/client";
-import { getDayName } from "^/lib/formatDate";
-import { isCUID } from "^/lib/checkValidity";
+import { getDayName } from "@/lib/formatDate";
+import { isCUID } from "@/lib/checkValidity";
 
 const getMemberDailyPlanningSchema = z.object({
   memberId: z.string().cuid(),

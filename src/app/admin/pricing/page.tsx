@@ -5,30 +5,28 @@ import {
   DeletePricing,
   UndeletePricing,
   UpdatePricing,
-} from "^/app/_modals/managePricing";
-import { Pricing as PricingComponent } from "^/app/_components/ui/pricing";
-import { auth } from "@clerk/nextjs/server";
-import { getUser } from "^/server/user";
+} from "@/app/_modals/managePricing";
+import { Pricing as PricingComponent } from "@/app/_components/ui/pricing";
 import { redirect, RedirectType } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { getAllPricing, getPricingById } from "^/server/pricing";
-import createLink from "^/lib/createLink";
-import { getRoleName } from "^/lib/getRoleName";
-import PageLayout from "^/app/_components/pageLayout";
+import { getAllPricing, getPricingById } from "@/server/pricing";
+import createLink from "@/lib/createLink";
+import { getRoleName } from "@/lib/getRoleName";
+import PageLayout from "@/app/_components/pageLayout";
 import Link from "next/link";
-import { formatMoney } from "^/lib/formatNumber";
+import { formatMoney } from "@/lib/formatNumber";
+import { getActualUser } from "@/lib/auth";
 
 type PageProps = Readonly<{
   searchParams: Promise<{ pricingId: string }>;
 }>;
 
 async function PricingManagement({ searchParams }: PageProps) {
-  const { userId } = await auth();
-  if (!userId) redirect("/", RedirectType.replace);
+  const user = await getActualUser();
 
-  const pricingId = (await searchParams).pricingId;
-  const user = await getUser(userId);
+  if (!user) redirect("/", RedirectType.replace);
   if (user.role !== "ADMIN") redirect("/", RedirectType.replace);
+  const pricingId = (await searchParams).pricingId;
   const t = await getTranslations("admin");
 
   const data = await getAllPricing();

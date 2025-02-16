@@ -1,4 +1,4 @@
-import { CACHE_TAGS, dbCache, getIdTag } from "^/lib/cache";
+import { CACHE_TAGS, dbCache, getIdTag } from "@/lib/cache";
 import { db } from "./db";
 import { z } from "zod";
 

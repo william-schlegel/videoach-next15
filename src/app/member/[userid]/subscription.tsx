@@ -8,7 +8,7 @@ import type {
   SubscriptionMode,
   SubscriptionRestriction,
 } from "@prisma/client";
-import { getDataNames } from "^/server/subscription";
+import { getDataNames } from "@/server/subscription";
 import { getTranslations } from "next-intl/server";
 
 type SubscriptionProps = {

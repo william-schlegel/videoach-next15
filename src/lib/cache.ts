@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { env } from "^/env";
+import { env } from "@/env";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
 
