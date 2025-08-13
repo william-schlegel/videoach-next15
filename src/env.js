@@ -8,10 +8,6 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
-    NODE_ENV: z
-      .enum(["development", "test", "production"])
-      .default("development"),
-    NO_CACHE: z.enum(["true", "false"]).default("false"),
     BETTER_AUTH_SECRET: z.string(),
     BETTER_AUTH_URL: z.string().url(),
     FACEBOOK_CLIENT_ID: z.string(),
@@ -28,6 +24,8 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_HOSTNAME: z.string().url(),
     NEXT_PUBLIC_BETA: z.enum(["true", "false"]).default("false"),
+    NEXT_PUBLIC_MAPBOX_TOKEN: z.string(),
+    NEXT_PUBLIC_MAPQUEST_KEY: z.string(),
   },
 
   /**
@@ -36,17 +34,17 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
-    NODE_ENV: process.env.NODE_ENV,
-    NO_CACHE: process.env.NO_CACHE,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
-    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT,
+    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 
     NEXT_PUBLIC_HOSTNAME: process.env.NEXT_PUBLIC_HOSTNAME,
     NEXT_PUBLIC_BETA: process.env.NEXT_PUBLIC_BETA,
+    NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
+    NEXT_PUBLIC_MAPQUEST_KEY: process.env.NEXT_PUBLIC_MAPQUEST_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

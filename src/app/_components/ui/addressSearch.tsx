@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { env } from "@/env";
 import useDebounce from "@lib/useDebounce";
-import { env } from "@root/src/env/client.mjs";
-import { useTranslation } from "next-i18next";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { type DefaultTFuncReturn } from "i18next";
 
 type Props = {
-  label?: DefaultTFuncReturn;
+  label?: string;
   defaultAddress?: string;
   onSearch: (adr: AddressData) => void;
   required?: boolean;
   iconSearch?: boolean;
-  error?: DefaultTFuncReturn;
+  error?: string;
   className?: string;
 };
 
@@ -32,7 +34,7 @@ const AddressSearch = ({
   const [address, setAddress] = useState("");
   const debouncedAddress = useDebounce<string>(address, 500);
   const [addresses, setAddresses] = useState<AddressData[]>([]);
-  const { t } = useTranslation("common");
+  const t = useTranslations("common");
 
   useEffect(() => {
     if (defaultAddress) setAddress(defaultAddress);
@@ -40,6 +42,7 @@ const AddressSearch = ({
 
   useEffect(() => {
     if (debouncedAddress) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       searchAddresses(debouncedAddress).then((found) => setAddresses(found));
     } else setAddresses([]);
   }, [debouncedAddress]);
@@ -67,7 +70,7 @@ const AddressSearch = ({
       {label ? (
         <label className={`label ${required ? "required" : ""}`}>{label}</label>
       ) : null}
-      <div className={`dropdown-bottom dropdown ${className ?? ""}`}>
+      <div className={`dropdown dropdown-bottom ${className ?? ""}`}>
         <div className="input-group">
           {iconSearch ? (
             <span>
@@ -78,7 +81,7 @@ const AddressSearch = ({
             </span>
           ) : null}
           <input
-            className="input-bordered input w-full"
+            className="input input-bordered w-full"
             value={address}
             onChange={(e) => handleSelect(e.currentTarget.value)}
             list="addresses"
@@ -88,7 +91,7 @@ const AddressSearch = ({
         </div>
         {error ? <p className="label-text-alt text-error">{error}</p> : null}
         {addresses.length > 0 ? (
-          <ul className="dropdown-content menu rounded-box w-full bg-base-100 p-2 shadow">
+          <ul className="menu dropdown-content w-full rounded-box bg-base-100 p-2 shadow">
             {addresses.map((adr, idx) => (
               <li key={`ADR-${idx}`}>
                 <button
@@ -135,10 +138,11 @@ async function searchAddresses(address: string): Promise<AddressData[]> {
           lng: location.latLng.lng,
           address: chunks.reduce(
             (prev, chunk) => (prev ? `${prev}, ${chunk}` : chunk),
-            ""
+            "",
           ),
         };
-      }
+      },
     ) ?? [];
+  /* eslint-disable @typescript-eslint/no-unsafe-return */
   return locations;
 }

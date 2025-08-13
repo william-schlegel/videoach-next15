@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { env } from "@/env";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
-
-const NO_CACHE = env.NO_CACHE === "true";
+import { NO_CACHE } from "./defaultValues";
 
 export type ValidTags =
   | ReturnType<typeof getGlobalTag>

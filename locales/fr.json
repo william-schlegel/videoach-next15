@@ -696,6 +696,8 @@
     "my-address": "Mon adresse",
     "search-radius": "Rayon de recherche",
     "search-club": "Rechercher les clubs",
+    "error-fetching-clubs": "Erreur lors de la récupération des clubs",
+
     "search-coach": "Rechercher les coachs",
     "club": "Club",
     "site": "Site",

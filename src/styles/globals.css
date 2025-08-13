@@ -4,19 +4,19 @@
 
 @layer components {
   h1 {
-    @apply text-primary space-x-2 py-4 text-4xl font-bold;
+    @apply space-x-2 py-4 text-4xl font-bold text-primary;
   }
   h2 {
-    @apply text-primary space-x-2 py-3 text-3xl font-bold;
+    @apply space-x-2 py-3 text-3xl font-bold text-primary;
   }
   h3 {
-    @apply text-secondary space-x-2 py-3 text-2xl font-semibold;
+    @apply space-x-2 py-3 text-2xl font-semibold text-secondary;
   }
   h4 {
-    @apply text-secondary space-x-2 py-2 text-xl font-semibold;
+    @apply space-x-2 py-2 text-xl font-semibold text-secondary;
   }
   label {
-    @apply label-text label text-primary font-semibold;
+    @apply label label-text font-semibold text-primary;
   }
 
   label.required::after {
@@ -30,18 +30,22 @@
   /*label:has(+ input["required"])::after*/
 
   textarea {
-    @apply textarea-bordered textarea w-full;
+    @apply textarea textarea-bordered w-full;
   }
   select {
-    @apply select-bordered select w-full;
+    @apply select select-bordered w-full;
   }
   .pill {
-    @apply border-neutral bg-base-200 text-base-content flex flex-wrap items-center gap-2 border p-[0.5rem];
+    @apply flex flex-wrap items-center gap-2 border border-neutral bg-base-200 p-[0.5rem] text-base-content;
     border-radius: var(--rounded-btn, 0.5rem);
   }
 
   .pill-xs {
     @apply px-[0.25rem] py-[0.125rem] text-xs;
+  }
+
+  .input-group {
+    @apply flex items-center gap-2;
   }
 }
 
